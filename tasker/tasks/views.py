@@ -9,8 +9,12 @@ from django.views.generic import CreateView, DetailView, ListView
 from django.urls import reverse
 from django_filters.views import FilterView
 from tasker.tasks.filters import TaskListFilter
-from tasker.tasks.forms import TaskListCreateForm, TaskCreateForm, TaskEditForm
+from tasker.tasks.forms import TaskListCreateForm, TaskForm
 from tasker.tasks.models import TaskList, Task
+
+
+class TaskListFilterView(FilterView):
+    filterset_class = TaskListFilter
 
 
 def tasklist_list_view(request):
@@ -22,10 +26,6 @@ def tasklist_list_view(request):
     return render(request, "tasks/tasklist_list.html", context)
 
 
-class TaskListFilterView(FilterView):
-    filterset_class = TaskListFilter
-
-
 def tasklist_create_view(request):
     context = {}
     form = TaskListCreateForm(request.POST or None)
@@ -34,7 +34,9 @@ def tasklist_create_view(request):
         if form.is_valid():
             task_list = form.save()
             response = HttpResponse()
-            response["HX-Trigger"] = json.dumps({"redirect": {"url": task_list.get_absolute_url()}})
+            response["HX-Trigger"] = json.dumps(
+                {"redirect": {"url": task_list.get_absolute_url()}}
+            )
             return response
 
     context["form"] = form
@@ -59,16 +61,33 @@ def tasklist_add_task_view(request, slug):
     return render(request, "tasks/tasklist_tasks.html", context)
 
 
+def tasklist_delete_view(request, slug):
+    context = {}
+    obj = get_object_or_404(TaskList, slug=slug)
+
+    if request.method == "POST":
+        obj.delete()
+        return render(request, "tasks/task_delete.html", context)
+
+    return HttpResponseNotAllowed(
+        [
+            "POST",
+        ]
+    )
+
+
 def task_create_view(request, id):
     context = {}
     task_list = get_object_or_404(TaskList, id=id)
 
-    form = TaskCreateForm(request.POST or None)
+    form = TaskForm(request.POST or None)
     if request.method == "POST":
         if form.is_valid():
             form.instance.task_list = task_list
             form.save()
-            return HttpResponseRedirect(reverse("task-detail", kwargs={"id": form.instance.id}))
+            return HttpResponseRedirect(
+                reverse("task-detail", kwargs={"id": form.instance.id})
+            )
 
     context["form"] = form
     context["task_list_id"] = id
@@ -78,7 +97,7 @@ def task_create_view(request, id):
 def task_edit_view(request, id):
     context = {}
     obj = get_object_or_404(Task, id=id)
-    form = TaskEditForm(request.POST or None, instance=obj)
+    form = TaskForm(request.POST or None, instance=obj)
 
     # save the data from the form and redirect to detail_view
     if form.is_valid():

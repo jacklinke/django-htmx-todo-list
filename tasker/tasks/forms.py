@@ -24,24 +24,7 @@ class TaskListCreateForm(forms.ModelForm):
         return task_list
 
 
-class TaskCreateForm(forms.ModelForm):
-    class Meta:
-        model = Task
-        fields = ("name", "is_done")
-
-    def clean_name(self) -> str:
-        name: str = self.cleaned_data["name"]
-        if Task.objects.filter(name=name).exclude(id=self.instance.id).exists():
-            raise forms.ValidationError(f"A Task with the name {name} exists")
-        return name
-
-    def save(self, commit: bool = True) -> Task:
-        task: Task = super().save(commit)
-        task.save()
-        return task
-
-
-class TaskEditForm(forms.ModelForm):
+class TaskForm(forms.ModelForm):
     class Meta:
         model = Task
         fields = ("name", "is_done")

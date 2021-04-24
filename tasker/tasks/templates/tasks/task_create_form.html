@@ -1,25 +1,25 @@
-<tr id="task-list-form"hx-target="this" hx-swap="outerHTML">
+<tr id="task-list-form" hx-target="this" hx-swap="outerHTML">
   <td class="border-0" scope="row">
     <form>
         {% csrf_token %}
         <div class="form-row mb-3">
-        <div class="col">
-            <input class="form-control
-            {% if form.is_done.errors %} is-invalid {% endif %} 
-            id="id_name" name="name" placeholder="Name" {% if form.name.value %} value="{{ form.name.value }}"{% endif %}>
+            <div class="col">
+                <input class="form-control
+                {% if form.is_done.errors %} is-invalid {% endif %} 
+                id="id_name" name="name" placeholder="Name" {% if form.name.value %} value="{{ form.name.value }}"{% endif %}>
+            </div>
+            <div class="col">
+                <input type="checkbox"
+                {% if form.is_done.errors %} is-invalid {% endif %} 
+                id="id_is_done" name="is_done" placeholder="is_done" {% if form.is_done.value %} value="{{ form.is_done.value }}"{% endif %}>
+                <label class="form-check-label" for="id_is_done">
+                    Is task done?
+                </label>
+            </div>
+            <div class="col">
+                <button class="btn btn-primary btn-sm" hx-post="{% url 'task-create' id=task_list_id %}">Submit</button>
+            </div>
         </div>
-        <div class="col">
-            <input type="checkbox"
-            {% if form.is_done.errors %} is-invalid {% endif %} 
-            id="id_is_done" name="is_done" placeholder="is_done" {% if form.is_done.value %} value="{{ form.is_done.value }}"{% endif %}>
-        </div>
-        <div class="col">
-            <!-- <button class="btn btn-primary btn-sm" hx-post="{% url 'task-create' id=task_list_id %}" hx-swap="outerHTML"
-            hx-target="#task-list-form">Submit</button> -->
-            <button class="btn btn-primary btn-sm" hx-post="{% url 'task-create' id=task_list_id %}">Submit</button>
-        </div>
-        </div>
-
         {% if form.name.errors %}<i>{{ form.name.errors }}</i>{% endif %}
         {% if form.is_done.errors %}<i>{{ form.is_done.errors }}</i>{% endif %}
     </form>

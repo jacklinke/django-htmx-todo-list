@@ -1,24 +1,33 @@
 <div class="card">
-  <table class="table table-striped m-0">
-    <thead>
-      <tr>
-        <th class="border-0" scope="col">Name</th>
-        <th class="border-0" scope="col">Incomplete Tasks</th>
-        <th class="border-0" scope="col">Complete Tasks</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for tasklist in object_list %}
-      <tr>
-        <th class="border-0" scope="row">
-          <a href="{{ tasklist.get_absolute_url }}">
-            {{ tasklist.name }}
-          </a>
-        </th>
-        <td class="border-0">{{ tasklist.incomplete_tasks.count }}</td>
-        <td class="border-0">{{ tasklist.complete_tasks.count }}</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+    <table class="table table-striped m-0">
+        <thead>
+            <tr>
+                <th class="border-0" scope="col">Name</th>
+                <th class="border-0" scope="col">Incomplete Tasks</th>
+                <th class="border-0" scope="col">Complete Tasks</th>
+                <th class="border-0" scope="col">Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for tasklist in object_list %}
+            <tr hx-target="this" hx-swap="outerHTML">
+                <th class="border-0" scope="row">
+                <a href="{{ tasklist.get_absolute_url }}">
+                    {{ tasklist.name }}
+                </a>
+                </th>
+                <td class="border-0">{{ tasklist.incomplete_tasks.count }}</td>
+                <td class="border-0">{{ tasklist.complete_tasks.count }}</td>
+                <td class="border-0">
+                    <form class="ml-2">
+                        {% csrf_token %}
+                        <button class="btn btn-danger btn-sm" hx-post="{% url 'tasklist-delete' slug=tasklist.slug %}" hx-confirm="Are you sure?">
+                        Delete
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </div>
