@@ -9,12 +9,22 @@ This app lets you build todo lists. It demonstrates functionality with django an
 
 ## Images
 
+### Intitial Look at the app
+
 ![Intitial Look at the app](/images/0_initial_look.png)
+
+### Adding a new TaskList
 
 ![Adding a new TaskList](/images/1_add_tasklist.png)
 
+### The newly created TaskList
+
 ![The newly created TaskList](/images/2_new_tasklist.png)
 
+### Adding Task instances
+
 ![Adding Task instances](/images/3_adding_tasks.png)
+
+### Editing existing Task instances
 
 ![Editing existing Task instances](/images/4_editing_tasks.png)
