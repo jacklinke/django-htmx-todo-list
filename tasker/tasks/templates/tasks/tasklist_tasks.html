@@ -1,0 +1,17 @@
+{% for task in tasklist.tasks.all %}
+<tr hx-target="this" hx-swap="outerHTML">
+  <td class="border-0" scope="row">
+    task name: {{ task.name }}<br>
+    is_done: {{ task.is_done }}<br>
+    <button hx-get="{% url 'task-edit' id=task.id %}" class="btn btn-primary btn-sm">
+    Click To Edit
+    </button>
+    <form>
+        {% csrf_token %}
+        <button class="btn btn-danger btn-sm" hx-post="{% url 'task-delete' id=task.id %}" hx-confirm="Are you sure?">
+        Delete
+        </button>
+    </form>
+  </td>
+</tr>
+{% endfor %}
