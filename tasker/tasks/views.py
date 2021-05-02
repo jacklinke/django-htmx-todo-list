@@ -2,15 +2,16 @@ import json
 from typing import Any, Dict, List, cast
 
 from django.forms.models import BaseModelForm
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotAllowed
+from django.http import HttpResponse, HttpResponseNotAllowed, HttpResponseRedirect
 from django.http.request import HttpRequest
 from django.shortcuts import get_object_or_404, render
-from django.views.generic import CreateView, DetailView, ListView
 from django.urls import reverse
+from django.views.generic import CreateView, DetailView, ListView
 from django_filters.views import FilterView
+
 from tasker.tasks.filters import TaskListFilter
-from tasker.tasks.forms import TaskListCreateForm, TaskForm
-from tasker.tasks.models import TaskList, Task
+from tasker.tasks.forms import TaskForm, TaskListCreateForm
+from tasker.tasks.models import Task, TaskList
 
 
 class TaskListFilterView(FilterView):
@@ -34,9 +35,7 @@ def tasklist_create_view(request):
         if form.is_valid():
             task_list = form.save()
             response = HttpResponse()
-            response["HX-Trigger"] = json.dumps(
-                {"redirect": {"url": task_list.get_absolute_url()}}
-            )
+            response["HX-Trigger"] = json.dumps({"redirect": {"url": task_list.get_absolute_url()}})
             return response
 
     context["form"] = form
@@ -67,7 +66,7 @@ def tasklist_delete_view(request, slug):
 
     if request.method == "POST":
         obj.delete()
-        return render(request, "tasks/task_delete.html", context)
+        return HttpResponse("")
 
     return HttpResponseNotAllowed(
         [
@@ -85,9 +84,7 @@ def task_create_view(request, id):
         if form.is_valid():
             form.instance.task_list = task_list
             form.save()
-            return HttpResponseRedirect(
-                reverse("task-detail", kwargs={"id": form.instance.id})
-            )
+            return HttpResponseRedirect(reverse("task-detail", kwargs={"id": form.instance.id}))
 
     context["form"] = form
     context["task_list_id"] = id
@@ -122,7 +119,7 @@ def task_delete_view(request, id):
 
     if request.method == "POST":
         obj.delete()
-        return render(request, "tasks/task_delete.html", context)
+        return HttpResponse("")
 
     return HttpResponseNotAllowed(
         [

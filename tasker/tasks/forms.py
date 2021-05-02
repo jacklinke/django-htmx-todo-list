@@ -1,6 +1,7 @@
 from django import forms
 from django.utils.text import slugify
-from tasker.tasks.models import TaskList, Task
+
+from tasker.tasks.models import Task, TaskList
 
 
 class TaskListCreateForm(forms.ModelForm):
