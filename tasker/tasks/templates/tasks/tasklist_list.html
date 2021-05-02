@@ -3,71 +3,69 @@
 
 {% block content %}
 <div class="row mb-2">
-  <div class="col-9">
-    <form hx-trigger="keyup,mouseup delay:100ms" hx-get="{% url 'tasklist-filter' %}" hx-target="#tasklist-table">
-      <div class="form-row">
-        <div class="col">
-          <div class="input-group mb-2">
-            <div class="input-group-prepend">
-              <div class="input-group-text"><i class="fas fa-search"></i></div>
+    <div class="col-9">
+        <form hx-trigger="keyup,mouseup delay:100ms" hx-get="{% url 'tasklist-filter' %}" hx-target="#tasklist-table">
+            <div class="form-row">
+                <div class="col">
+                    <div class="input-group mb-2">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <i class="fas fa-search"></i>
+                            </div>
+                        </div>
+                        <input name="name" class="form-control" id="id_name" placeholder="Search Task Lists">
+                    </div>
+                </div>
+                <div class="col pt-2">
+                    {% for choice in filterset.form.completeness.field.choices %}
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="completeness" id="id_completeness_{{ forloop.counter }}"
+                        value="{{ choice.0 }}" {% ifequal forloop.counter 1 %}checked{% endifequal %}>
+                        <label class="form-check-label" for="id_completeness_{{ forloop.counter }}">{{ choice.1 }}</label>
+                    </div>
+                    {% endfor %}
+                </div>
             </div>
-            <input name="name" class="form-control" id="id_name" placeholder="Search Task Lists">
-          </div>
-        </div>
-        <div class="col pt-2">
-          {% for choice in filterset.form.completeness.field.choices %}
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="completeness" id="id_completeness_{{ forloop.counter }}"
-              value="{{ choice.0 }}" {% ifequal forloop.counter 1 %}checked{% endifequal %}>
-            <label class="form-check-label" for="id_completeness_{{ forloop.counter }}">{{ choice.1 }}</label>
-          </div>
-          {% endfor %}
-        </div>
-      </div>
-    </form>
-  </div>
-
-
-
-  <div class="col-3 text-right">
-    <!-- Example single danger button -->
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createModal">
-      <i class="fas fa-plus"></i>
-      Create Task List
-    </button>
-
-    <!-- Modal -->
-    <div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header border-0 pb-0">
-            <h5 class="modal-title" id="createModalLabel">Create Task List</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            {% include "tasks/tasklist_create_form.html" %}
-          </div>
-        </div>
-      </div>
+        </form>
     </div>
-  </div>
+
+    <div class="col-3 text-right">
+        <!-- Button to trigger modal -->
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createModal">
+            <i class="fas fa-plus"></i>
+            Create Task List
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header border-0 pb-0">
+                        <h5 class="modal-title" id="createModalLabel">Create Task List</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        {% include "tasks/tasklist_create_form.html" %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div id="tasklist-table">
-  {% include "tasks/tasklist_filter.html" with object_list=object_list %}
+    {% include "tasks/tasklist_filter.html" with object_list=object_list %}
 </div>
-
 {% endblock %}
 
 {% block extrascripts %}
 <script type="text/javascript">
-  document.addEventListener("redirect", evt => {
-    console.log(evt);
-    window.location.href = evt.detail.url;
-  });
-  htmx.logAll();
+    document.addEventListener("redirect", evt => {
+        console.log(evt);
+        window.location.href = evt.detail.url;
+    });
+    htmx.logAll();
 </script>
 {% endblock %}

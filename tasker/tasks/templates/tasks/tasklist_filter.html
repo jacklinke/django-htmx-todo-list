@@ -12,9 +12,9 @@
             {% for tasklist in object_list %}
             <tr hx-target="this" hx-swap="outerHTML">
                 <th class="border-0" scope="row">
-                <a href="{{ tasklist.get_absolute_url }}">
-                    {{ tasklist.name }}
-                </a>
+                    <a href="{{ tasklist.get_absolute_url }}">
+                        {{ tasklist.name }}
+                    </a>
                 </th>
                 <td class="border-0">{{ tasklist.incomplete_tasks.count }}</td>
                 <td class="border-0">{{ tasklist.complete_tasks.count }}</td>
