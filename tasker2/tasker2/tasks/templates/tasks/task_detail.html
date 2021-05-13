@@ -1,0 +1,28 @@
+<tr hx-target="this" hx-swap="outerHTML">
+    <td class="border-0" scope="row">
+        <div class="form-row mb-3">
+            <div class="col">
+                Task name: <b>{{ task.name }}</b>
+            </div>
+            <div class="col">
+                <input class="form-check-input" type="checkbox" value="" id="checkboxIsDone" disabled {% if task.is_done %}checked{% endif %}>
+                <label class="form-check-label" for="checkboxIsDone">
+                    Task is done
+                </label>
+            </div>
+            <div class="col">
+                <div class="row">
+                    <button hx-get="{% url 'task-edit' id=task.id %}" class="btn btn-primary btn-sm">
+                    Edit
+                    </button>
+                    <form>
+                        {% csrf_token %}
+                        <button class="btn btn-danger btn-sm ml-1" hx-post="{% url 'task-delete' id=task.id %}" hx-confirm="Are you sure?">
+                        Delete
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </td>
+</tr>

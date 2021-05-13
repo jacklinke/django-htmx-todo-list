@@ -1,0 +1,17 @@
+{% load crispy_forms_tags %}
+
+<tr id="task-list-form" hx-target="this" hx-swap="outerHTML">
+  <td class="border-0" scope="row">
+    <form>
+        <div class="form-row mb-12">
+            {% crispy form %}
+            <div class="form-group col-md-4 mb-4">
+                <button class="btn btn-primary btn-sm" hx-post="{% url 'task-edit' id=form.instance.id %}">Submit</button>
+                <button class="btn btn-danger btn-sm" _="on click remove closest <tr/>">Cancel</button>
+            </div>
+        </div>
+        {% if form.name.errors %}<i>{{ form.name.errors }}</i>{% endif %}
+        {% if form.is_done.errors %}<i>{{ form.is_done.errors }}</i>{% endif %}
+    </form>
+  </td>
+</tr>

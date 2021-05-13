@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    <table class="table table-striped m-0">
+        <thead>
+            <tr>
+                <th class="border-0" scope="col">{{ tasklist.name }}</th>
+            </tr>
+        </thead>
+        <tbody id="tasklist-tasks">
+            {% include "tasks/tasklist_tasks.html" with tasklist=tasklist %}
+        </tbody>
+    </table>
+    <div class="card-body px-3" hx-target="#tasklist-tasks" hx-swap="beforeend">
+        <button hx-get="{% url 'task-create' id=tasklist.id %}" type="submit" class="btn btn-outline-primary btn-sm">
+            <i class="fas fa-plus"></i>
+            Add Task
+        </button>
+    </div>
+</div>
+{% endblock %}
