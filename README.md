@@ -10,6 +10,8 @@ This project lets you build todo lists. It demonstrates functionality with djang
 
 The original project used class-based Django views. That has been improved to use function-based views (see [Django Views — The Right Way](https://spookylukey.github.io/django-views-the-right-way/) to read why FBV is often the better approach!)
 
+There are actually two example projects here which are the same in all respects except that `tasker` uses hard-coded html forms, and `tasker2` uses django forms with [django-crispy-forms](https://github.com/django-crispy-forms/django-crispy-forms) for formatting.
+
 This project is very basic. It does not make use of authorization or other common important concerns. The focus is 100% on demonstrating some Django & HTMX concepts.
 
 ## Images
