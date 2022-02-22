@@ -20,7 +20,7 @@
                     {% for choice in filterset.form.completeness.field.choices %}
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" name="completeness" id="id_completeness_{{ forloop.counter }}"
-                        value="{{ choice.0 }}" {% ifequal forloop.counter 1 %}checked{% endifequal %}>
+                        value="{{ choice.0 }}" {% if forloop.counter == 1 %}checked{% endif %}>
                         <label class="form-check-label" for="id_completeness_{{ forloop.counter }}">{{ choice.1 }}</label>
                     </div>
                     {% endfor %}
